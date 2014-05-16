@@ -1,0 +1,54 @@
+#include <UniCString/C/UniCError.h>
+
+inline UniCString::Exception::~Exception(void)
+{
+    if (this->_impl != NULL) {
+        UniCErrorDestroy(this->_impl);
+    }
+    return;
+}
+
+inline const char* UniCString::Exception::GetMessage(void) const
+{
+    if (this->_impl != NULL) {
+        return (UniCErrorGetMessage(this->_impl));
+    }
+    return (NULL);
+}
+
+inline const char* UniCString::Exception::GetFileName(void) const
+{
+    if (this->_impl != NULL) {
+        return (UniCErrorGetFileName(this->_impl));
+    }
+    return (NULL);
+}
+
+inline const char* UniCString::Exception::GetFunctionName(void) const
+{
+    if (this->_impl != NULL) {
+        return (UniCErrorGetFunctionName(this->_impl));
+    }
+    return (NULL);
+}
+
+inline std::size_t UniCString::Exception::GetLineNumber(void) const
+{
+    if (this->_impl != NULL) {
+        return (UniCErrorGetLineNumber(this->_impl));
+    }
+    return (0);
+}
+
+inline const char* UniCString::Exception::GetFullMessage(void) const
+{
+    if (this->_impl != NULL) {
+        return (UniCErrorGetFullMessage(this->_impl));
+    }
+    return (NULL);
+}
+
+#define UniCString_UniCExceptionCheck(data) \
+    if (data != NULL) { \
+        throw (UniCString::Exception(data)); \
+    }

@@ -1,0 +1,203 @@
+#include <UniCString/CXX/UniCException.hxx>
+
+inline UniCString::String::String(void)
+{
+    UniCErrorT error = UniCStringCreate(&(this->_impl));
+    UniCString_UniCExceptionCheck(error);
+    return;
+}
+
+inline UniCString::String::String(const UniCString::String& other)
+{
+    UniCErrorT error = UniCStringCreateFromString(other._impl, &(this->_impl));
+    UniCString_UniCExceptionCheck(error);
+    return;
+}
+
+inline UniCString::String::String(const char character)
+{
+    UniCErrorT error = UniCStringCreateFromChar(character, &(this->_impl));
+    UniCString_UniCExceptionCheck(error);
+    return;
+}
+
+inline UniCString::String::String(const wchar_t character)
+{
+    UniCErrorT error = UniCStringCreateFromWChar(character, &(this->_impl));
+    UniCString_UniCExceptionCheck(error);
+    return;
+}
+
+inline UniCString::String::String(const std::string& source, Encoding encoding)
+{
+    UniCErrorT result = UniCStringCreateFromCharString(
+        source.c_str(),
+        source.size(),
+        static_cast<UniCEncodingT>(encoding),
+        &(this->_impl)
+    );
+    UniCString_UniCExceptionCheck(result);
+    return;
+}
+
+inline UniCString::String::String(const std::wstring& source)
+{
+    UniCErrorT error = UniCStringCreateFromWCharString(
+        source.c_str(),
+        source.size(),
+        &(this->_impl)
+    );
+    UniCString_UniCExceptionCheck(error);
+    return;
+}
+
+inline UniCString::String::String(const std::vector<unsigned char>& source, Encoding encoding)
+{
+    UniCErrorT error = UniCStringCreateFromBuffer(
+        &(source[0]),
+        source.size(),
+        static_cast<UniCEncodingT>(encoding),
+        &(this->_impl)
+    );
+    UniCString_UniCExceptionCheck(error);
+    return;
+}
+
+inline UniCString::String::~String(void)
+{
+    if (this->_impl != NULL) {
+        UniCStringDestroy(this->_impl);
+    }
+    return;
+}
+
+inline bool UniCString::String::IsEmpty(const UniCString::String& str)
+{
+    UniCBoolT result = UniCTrue;
+    UniCErrorT error = UniCStringIsEmpty(str._impl, &result);
+    UniCString_UniCExceptionCheck(error);
+    return (UniCBoolIsTrue(result));
+}
+
+inline std::size_t UniCString::String::GetLength(void) const
+{
+    std::size_t result = 0;
+    UniCErrorT error = UniCStringGetLength(this->_impl, &result);
+    UniCString_UniCExceptionCheck(error);
+    return (result);
+}
+
+inline std::size_t UniCString::String::ConvertToEncodedString(
+    Encoding encoding,
+    std::vector<unsigned char>& outputBuffer,
+    const bool isNullTerminated
+) const
+{
+    std::size_t requiredSize = 0;
+    UniCErrorT error = UniCStringEncode(
+        this->_impl,
+        static_cast<UniCEncodingT>(encoding),
+        NULL,
+        0,
+        UniCBoolSet(isNullTerminated),
+        &requiredSize
+    );
+    UniCString_UniCExceptionCheck(error);
+    outputBuffer.clear();
+    outputBuffer.resize(requiredSize);
+    error = UniCStringEncode(
+        this->_impl,
+        static_cast<UniCEncodingT>(encoding),
+        &(outputBuffer[0]),
+        outputBuffer.size(),
+        UniCBoolSet(isNullTerminated),
+        &requiredSize
+    );
+    UniCString_UniCExceptionCheck(error);
+    return (outputBuffer.size());
+}
+
+inline std::string UniCString::String::ConvertToStdString(Encoding encoding) const
+{
+    std::vector<unsigned char> tempBuffer;
+    this->ConvertToEncodedString(encoding, tempBuffer, false);
+    std::string result(
+        reinterpret_cast<const char*>(&(tempBuffer[0])),
+        tempBuffer.size()
+    );
+    return (result);
+}
+
+inline std::wstring UniCString::String::ConvertToStdWString(void) const
+{
+    std::size_t requiredSize = 0;
+    UniCErrorT error = UniCStringEncodeToWCharString(
+        this->_impl,
+        NULL,
+        0,
+        UniCFalse,
+        &requiredSize
+    );
+    UniCString_UniCExceptionCheck(error);
+
+    std::vector<wchar_t> tempBuffer(requiredSize);
+    error = UniCStringEncodeToWCharString(
+        this->_impl,
+        &(tempBuffer[0]),
+        tempBuffer.size(),
+        UniCFalse,
+        &requiredSize
+    );
+    UniCString_UniCExceptionCheck(error);
+
+    std::wstring result(
+        &(tempBuffer[0]),
+        tempBuffer.size()
+    );
+    return (result);
+}
+
+inline UniCString::String& UniCString::String::operator=(const UniCString::String& other)
+{
+    UniCErrorT error = UniCStringAssign(this->_impl, other._impl);
+    UniCString_UniCExceptionCheck(error);
+    return (*this);
+}
+
+inline UniCString::String& UniCString::String::operator+=(const UniCString::String& other)
+{
+    UniCErrorT error = UniCStringAppend(this->_impl, other._impl);
+    UniCString_UniCExceptionCheck(error);
+    return (*this);
+}
+
+inline UniCString::String UniCString::operator+(const UniCString::String& lhs, const UniCString::String& rhs)
+{
+    UniCString::String result;
+    UniCErrorT error = UniCStringCombine(lhs._impl, rhs._impl, &(result._impl));
+    UniCString_UniCExceptionCheck(error);
+    return (result);
+}
+
+inline bool UniCString::operator==(const UniCString::String& lhs, const UniCString::String& rhs)
+{
+    UniCBoolT result = UniCFalse;
+    UniCErrorT error = UniCStringIsEqual(lhs._impl, rhs._impl, &result);
+    UniCString_UniCExceptionCheck(error);
+    return (UniCBoolIsTrue(result));
+}
+
+inline bool UniCString::operator!=(const UniCString::String& lhs, const UniCString::String& rhs)
+{
+    return (!(lhs == rhs));
+}
+
+inline std::ostream& operator<<(std::ostream& outStream, const UniCString::String& str)
+{
+    return (outStream << str.ConvertToStdString());
+}
+
+inline std::wostream& operator<<(std::wostream& outStream, const UniCString::String& str)
+{
+    return (outStream << str.ConvertToStdWString());
+}
