@@ -1,3 +1,4 @@
+/// @file
 #if !defined(UNICSTRING_CXX_UNICEXCEPTION_HXX)
 #define UNICSTRING_CXX_UNICEXCEPTION_HXX
 
@@ -17,7 +18,7 @@ namespace UniCString
         ///
         /// Creates a new Exception instance with the given implementation.
         /// @param impl The implementation detail.
-        /// @remarks Users normally does not need to call this function explicitly.
+        /// @remarks Users normally do not need to call this function explicitly.
         /// 
         Exception(UniCErrorT impl) : _impl(impl) { }
 
@@ -69,7 +70,12 @@ namespace UniCString
             return (this->GetFullMessage());
         }
 
-        // Allows easy printing of this exception to an output stream.
+        ///
+        /// Allows easy printing of this Exception to an output stream.
+        /// @param outStream The output stream to print this Exception at.
+        /// @param ex The Exception to print.
+        /// @returns The output stream.
+        ///
         friend std::ostream& operator<<(std::ostream& outStream, const Exception& ex)
         {
             return (outStream << ex.GetFullMessage());

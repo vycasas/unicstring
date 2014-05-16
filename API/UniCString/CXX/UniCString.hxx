@@ -1,3 +1,4 @@
+/// @file
 #if !defined(UNICSTRING_CXX_UNISTRING_HXX)
 #define UNICSTRING_CXX_UNISTRING_HXX
 
@@ -21,13 +22,13 @@ namespace UniCString
         ///
         typedef enum _Encoding
         {
-            UTF8 = UniCUTF8,
-            UTF16 = UniCUTF16,
-            UTF16BE = UniCUTF16BE,
-            UTF16LE = UniCUTF16LE,
-            UTF32 = UniCUTF32,
-            UTF32BE = UniCUTF32BE,
-            UTF32LE = UniCUTF32LE
+            UTF8 = UniCUTF8,        ///< UTF-8 Encoding.
+            UTF16 = UniCUTF16,      ///< UTF-16 System Encoding.
+            UTF16BE = UniCUTF16BE,  ///< UTF-16 Big Endian Encoding.
+            UTF16LE = UniCUTF16LE,  ///< UTF-16 Little Endian Encoding.
+            UTF32 = UniCUTF32,      ///< UTF-32 System Endian Encoding.
+            UTF32BE = UniCUTF32BE,  ///< UTF-32 Big Endian Encoding.
+            UTF32LE = UniCUTF32LE   ///< UTF-32 Little Endian Encoding.
         }
         Encoding;
 

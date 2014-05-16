@@ -1,3 +1,4 @@
+/** @file **/
 #if !defined(UNICSTRING_C_UNICTYPES_H)
 #define UNICSTRING_C_UNICTYPES_H
 
@@ -7,32 +8,32 @@ extern "C"
 #endif /* defined(__cplusplus) */
 
 /**
-/// Return type for all C API. This indicates the error code.
+// Return type for all C API. This indicates the error code.
 **/
 typedef struct _UniCErrorT* UniCErrorT;
 
 /**
-/// Represents a boolean type.
+// Represents a boolean type.
 **/
 typedef unsigned char UniCBoolT;
 
 /**
-/// Represents a UniCString instance.
+// Represents a UniCString instance.
 **/
 typedef struct _UniCStringT* UniCStringT;
 
 /**
-/// Encoding definitions.
+// Encoding definitions.
 **/
 typedef enum _UniCEncodingT
 {
-    UniCUTF8 = 0,
-    UniCUTF16 = 1,
-    UniCUTF16BE = 2,
-    UniCUTF16LE = 3,
-    UniCUTF32 = 4,
-    UniCUTF32BE = 5,
-    UniCUTF32LE = 6
+    UniCUTF8 = 0,       /**< UTF-8 Encoding. **/
+    UniCUTF16 = 1,      /**< UTF-16 System Endian Encoding. **/
+    UniCUTF16BE = 2,    /**< UTF-16 Big Endian Encoding. **/
+    UniCUTF16LE = 3,    /**< UTF-16 Little Endian Encoding. **/
+    UniCUTF32 = 4,      /**< UTF-32 System Endian Encoding. **/
+    UniCUTF32BE = 5,    /**< UTF-32 Big Endian Encoding. **/
+    UniCUTF32LE = 6     /**< UTF-32 Little Endian Encoding. **/
 }
 UniCEncodingT;
 

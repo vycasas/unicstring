@@ -23,4 +23,4 @@ the curses version of CMake (ccmake) or the Qt-based GUI (cmake-gui).
 Please see: http://www.cmake.org/ for more information.
 
 License:
-The files in this project is licensed under "The MIT License". Please see the file LICENSE for more information.
+The files in this project are licensed under "The MIT License". Please see the file LICENSE for more information.
