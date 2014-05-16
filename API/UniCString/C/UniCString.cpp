@@ -1,5 +1,7 @@
 #include "UniCString.h"
 
+#include <algorithm>
+
 #include <Core/Common.hpp>
 #include <Core/Exception.hpp>
 #include <Core/String.hpp>

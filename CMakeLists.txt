@@ -4,6 +4,7 @@ project(UniCString C CXX)
 option(build_tests "Build testing suites." OFF)
 
 if (MSVC)
+    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 else ()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
@@ -90,30 +91,37 @@ if (build_tests)
     add_executable(UnicodeTest ${CMAKE_SOURCE_DIR}/Tests/Core/UnicodeTest.cpp)
     target_link_libraries(UnicodeTest CoreUniCString)
     add_test(UnicodeTest UnicodeTest)
+    set_property(TARGET UnicodeTest PROPERTY FOLDER "Tests")
 
     add_executable(UTF8CodecTest ${CMAKE_SOURCE_DIR}/Tests/Core/UTF8CodecTest.cpp)
     target_link_libraries(UTF8CodecTest CoreUniCString)
     add_test(UTF8CodecTest UTF8CodecTest)
+    set_property(TARGET UTF8CodecTest PROPERTY FOLDER "Tests")
 
     add_executable(UTF16CodecTest ${CMAKE_SOURCE_DIR}/Tests/Core/UTF16CodecTest.cpp)
     target_link_libraries(UTF16CodecTest CoreUniCString)
     add_test(UTF16CodecTest UTF16CodecTest)
+    set_property(TARGET UTF16CodecTest PROPERTY FOLDER "Tests")
 
     add_executable(UTF32CodecTest ${CMAKE_SOURCE_DIR}/Tests/Core/UTF32CodecTest.cpp)
     target_link_libraries(UTF32CodecTest CoreUniCString)
     add_test(UTF32CodecTest UTF32CodecTest)
+    set_property(TARGET UTF32CodecTest PROPERTY FOLDER "Tests")
 
     add_executable(CoreStringTest ${CMAKE_SOURCE_DIR}/Tests/Core/CoreStringTest.cpp)
     target_link_libraries(CoreStringTest CoreUniCString)
     add_test(CoreStringTest CoreStringTest)
+    set_property(TARGET CoreStringTest PROPERTY FOLDER "Tests")
 
     add_executable(CAPITest ${CMAKE_SOURCE_DIR}/Tests/API/UniCString_C_Test.c)
     target_link_libraries(CAPITest UniCString)
     add_test(CAPITest CAPITest)
+    set_property(TARGET CAPITest PROPERTY FOLDER "Tests")
 
     add_executable(CXXAPITest ${CMAKE_SOURCE_DIR}/Tests/API/UniCString_CXX_Test.cc)
     target_link_libraries(CXXAPITest UniCString)
     add_test(CXXAPITest CXXAPITest)
+    set_property(TARGET CXXAPITest PROPERTY FOLDER "Tests")
 endif ()
 
 install(
@@ -134,4 +142,8 @@ install(
     DESTINATION include/UniCString/CXX
 )
 
-install(TARGETS UniCString LIBRARY DESTINATION lib)
+install(
+    TARGETS UniCString
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+)
